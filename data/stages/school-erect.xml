@@ -1,0 +1,33 @@
+<!DOCTYPE codename-engine-stage>
+<stage zoom="1" folder="stages/school/" startCamPosY="550" startCamPosX="600">
+	<use-extension script="pixel"/>
+    <use-extension script="dropshadow-effect"/>
+
+	<sprite name="bgSky" x="-12" y="0" sprite="erect/weebSky"
+		antialiasing="false" scale="6" scroll="0.1" updateHitbox="true"/>
+
+	<sprite name="bgSchool" x="-216" y="0" sprite="erect/weebSchool"
+		antialiasing="false" scale="6" scrollx="0.6" scrolly="0.9" updateHitbox="true"/>
+
+	<sprite name="bgStreet" x="-204" y="0" sprite="erect/weebStreet"
+		antialiasing="false" scale="6" scroll="0.95" updateHitbox="true"/>
+
+
+	<sprite name="fgTrees" x="-30" y="130" sprite="erect/weebTreesBack"
+		antialiasing="false" scale="4.797" scroll="0.9" updateHitbox="true" type="loop"/>
+
+	<sprite name="bgTrees" x="-590" y="-800" sprite="erect/weebTrees" antialiasing="false" scale="5.102" scroll="0.85" updateHitbox="true" type="loop">
+	</sprite>
+
+	<high-memory>
+		<sprite name="treeLeaves" x="-200" y="-40" sprite="erect/petals"
+			antialiasing="false" scale="6" scroll="0.85" updateHitbox="true" type="loop"/>
+	</high-memory>
+
+    <girlfriend
+        ds_applyShader="true" brightness="-66" hue="-10" contrast="24" saturation="23"/>
+	<dad
+        ds_applyShader="true" brightness="-66" hue="-10" contrast="24" saturation="23"/>
+	<boyfriend
+        ds_applyShader="true" brightness="-66" hue="-10" contrast="24" saturation="23" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_altMask="stages/school/erect/masks/bfPixel_mask" ds_maskThreshold="1" ds_applyAltMask="true"/>
+</stage>
