@@ -28,7 +28,7 @@ function onStageNodeParsed(event)
         var atts = getDSShaderAttFromNode(node);
 
         if (atts[0] == false) return;  // not using !atts[0] since the game would have convert a dynamic into a null which is slower; i wonder if its the same in hscript..?  - Nex
-        initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], sprite);
+        initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], atts[14], sprite);
     }
     else if (sprite is StageCharPos)
     {
@@ -40,7 +40,7 @@ function onStageNodeParsed(event)
 function create() if (strumLines != null) for (i => atts in dsShaderCharsAtts) if(atts != null) for (char in strumLines.members[i]?.characters)
 {
     if (atts[0] == false) continue;
-    initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], char);
+    initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], atts[14], char);
 }
 
 public function getCharPosIndex(charPos:String):Int
@@ -59,6 +59,7 @@ public function getDSShaderAttFromNode(node:Access):Array<Dynamic>
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_antialiasAmt"), 2),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_strength"), 1),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_distance"), 15),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_curZoom"), 1),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_threshold"), 0.1),
         CoolUtil.getAtt(node, "ds_altMask"),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_maskThreshold")),
@@ -70,7 +71,7 @@ public function getDSShaderAtt(att:String, ?def:Float):Float
 
 public function initDSShader(
     brightness:Float, hue:Float, contrast:Float, saturation:Float, color:String, angle:Float, antialiasAmt:Float, strength:Float,
-    distance:Float, threshold:Float, altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
+    distance:Float, curZoom:Float, threshold:Float, altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
     ):CustomShader
 {
     var dropShadow = getDropShadow(sprite);
@@ -81,6 +82,7 @@ public function initDSShader(
     dropShadow.angle = angle;
     dropShadow.strength = strength;
     dropShadow.distance = distance;
+    dropShadow.curZoom = curZoom;
     dropShadow.threshold = threshold;
     dropShadow.antialiasAmt = antialiasAmt;
 
@@ -106,6 +108,7 @@ public function getDropShadow(?attachedSprite:FlxSprite):DropShadowShader {
     fucker.baseSaturation = 0;
     fucker.baseBrightness = 0;
     fucker.baseContrast = 0;
+    fucker.curZoom = 1;
 
     fucker.antialiasAmt = 2;
 
@@ -158,6 +161,11 @@ class DropShadowShader
         relative to the texture itself... NOT the camera.
     */
     public var distance:Float;
+
+    /*
+        The current zoom of the camera. Needed to figure out how much to multiply the drop shadow size.
+    */
+    public var curZoom:Float;
 
     /*
         The strength of the drop shadow.
@@ -289,6 +297,12 @@ class DropShadowShader
     public function set_distance(val:Float):Float
     {
         shader.dist = distance = val;
+        return val;
+    }
+
+    public function set_curZoom(val:Float):Float
+    {
+        shader.zoom = curZoom = val;
         return val;
     }
 
