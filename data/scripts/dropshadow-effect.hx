@@ -1,7 +1,7 @@
 /** le credits
  * Syrup: made the stage extension
  * Moro-Maniac: grabbed the shader frag file
- * Nex_isDumb: made the DropShadowShader class
+ * Nex_isDumb: made the DropShadowShader class, made fixes and optimizations
  */
 import flixel.graphics.frames.FlxFrame;
 import flixel.math.FlxAngle;
