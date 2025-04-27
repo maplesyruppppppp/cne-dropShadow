@@ -1,0 +1,13 @@
+<!DOCTYPE codename-engine-stage>
+<stage zoom="1" name="school-evil-erect" folder="stages/school/erect/" startCamPosY="550" startCamPosX="600">
+	<use-extension script="pixel"/>
+    <use-extension script="dropshadow-effect"/>
+    
+	<sprite name="bg" x="450" y="400" sprite="evilSchoolBG" antialiasing="false" scale="6" scrollx="0.8" scrolly="0.9"/>
+
+    <girlfriend ds_applyShader="true" ds_brightness="-90" ds_hue="-25" ds_contrast="-15" ds_color="#912240"
+        ds_antialiasAmt="0" ds_distance="5" ds_angle="180" ds_altMask="stages/school/erect/masks/gfPixel_mask" ds_maskThreshold="1" ds_applyAltMask="true"/>
+    <dad camyoffset="50" ds_applyShader="true" ds_brightness="30" hue="12"/>
+    <boyfriend ds_applyShader="true" ds_brightness="-90" ds_hue="-25" ds_contrast="-15" ds_color="#912240"
+        ds_antialiasAmt="0" ds_distance="3" ds_angle="180" ds_altMask="stages/school/erect/masks/bfPixel_mask" ds_maskThreshold="1" ds_applyAltMask="true"/>
+</stage>
