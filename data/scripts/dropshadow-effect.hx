@@ -1,16 +1,14 @@
-// le credits
-/**
- * syrup: made the stage extension
- * moro: ported the shader frag file
- * nex_isdumb: made the DropShadowShader class
+/** le credits
+ * Syrup: made the stage extension
+ * Moro-Maniac: grabbed the shader frag file
+ * Nex_isDumb: made the DropShadowShader class
  */
-
 import flixel.graphics.frames.FlxFrame;
 import flixel.math.FlxAngle;
-import funkin.game.Stage.StageCharPos;
 import funkin.backend.utils.FlxInterpolateColor;
-import openfl.display.BitmapData;
+import funkin.game.Stage.StageCharPos;
 import haxe.xml.Access;
+import openfl.display.BitmapData;
 
 if (!Options.gameplayShaders)
 {
@@ -18,12 +16,6 @@ if (!Options.gameplayShaders)
     return;
 }
 
-var __dsShaderAttNames:Array<String> = [
-    "ds_applyShader",
-    "brightness", "hue", "contrast", "saturation", "ds_color",
-    "ds_angle", "ds_antialiasAmt", "ds_strength", "ds_distance", "ds_threshold",
-    "ds_altMask", "ds_maskThreshold", "ds_applyAltmask"
-];
 public var dsShaderCharsAtts:Array<Array<Dynamic>> = [];
 
 function onStageNodeParsed(event)
@@ -35,24 +27,19 @@ function onStageNodeParsed(event)
     {
         var atts = getDSShaderAttFromNode(node);
 
-        if (!atts[0]) return;
+        if (atts[0] == false) return;  // not using !atts[0] since the game would have convert a dynamic into a null which is slower; i wonder if its the same in hscript..?  - Nex
         initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], sprite);
     }
-    else
+    else if (sprite is StageCharPos)
     {
-        var map = event.stage.characterPoses;
-
-        for (char in map.keys()) if (map[char] == event.sprite)
-        {
-            dsShaderCharsAtts[getCharPosIndex(char)] = getDSShaderAttFromNode(node);
-            break;
-        }
+        var name = event.name;
+        if (event.stage.characterPoses.exists(name)) dsShaderCharsAtts[getCharPosIndex(name)] = getDSShaderAttFromNode(node);
     }
 }
 
 function create() if (strumLines != null) for (i => atts in dsShaderCharsAtts) if(atts != null) for (char in strumLines.members[i]?.characters)
 {
-    if (!atts[0]) return;
+    if (atts[0] == false) continue;
     initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], char);
 }
 
@@ -63,28 +50,30 @@ public function getDSShaderAttFromNode(node:Access):Array<Dynamic>
     return
     [
         CoolUtil.getAtt(node, "ds_applyShader") == "true",
-        getDSShaderAtt(CoolUtil.getAtt(node, "brightness")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "hue")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "contrast")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "saturation")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_brightness")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_hue")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_contrast")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_saturation")),
         CoolUtil.getAtt(node, "ds_color"),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_angle")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "ds_antialiasAmt")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "ds_strength")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "ds_distance")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "ds_threshold")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_antialiasAmt"), 2),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_strength"), 1),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_distance"), 15),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_threshold"), 0.1),
         CoolUtil.getAtt(node, "ds_altMask"),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_maskThreshold")),
         CoolUtil.getAtt(node, "ds_applyAltMask") == "true"
     ];
 
-public function getDSShaderAtt(att:String):Float
-    return att?.length > 0 ? Std.parseFloat(att) : 0;
+public function getDSShaderAtt(att:String, ?def:Float):Float
+    return att?.length > 0 ? Std.parseFloat(att) : (def == null ? 0 : def);
 
-public function initDSShader(brightness:Float, hue:Float, contrast:Float, saturation:Float, color:String, angle:Float, antialiasAmt:Float, strength:Float, 
-    distance:Float, threshold:Float, altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite):CustomShader
+public function initDSShader(
+    brightness:Float, hue:Float, contrast:Float, saturation:Float, color:String, angle:Float, antialiasAmt:Float, strength:Float,
+    distance:Float, threshold:Float, altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
+    ):CustomShader
 {
-    var dropShadow = getDropShadow();
+    var dropShadow = getDropShadow(sprite);
 
     dropShadow.setAdjustColor(brightness, hue, contrast, saturation);
     dropShadow.color = FlxColor.fromString(color);
@@ -95,23 +84,15 @@ public function initDSShader(brightness:Float, hue:Float, contrast:Float, satura
     dropShadow.threshold = threshold;
     dropShadow.antialiasAmt = antialiasAmt;
 
-    dropShadow.useAltMask = applyAltMask;
-    if (altMask != null) dropShadow.altMaskImage = Assets.getBitmapData(Paths.image(altMask));
+    if (altMask != null) dropShadow.loadAltMask(Paths.image(altMask));
     dropShadow.maskThreshold = maskThreshold;
-
-    sprite.shader = dropShadow.shader;
-
-    dropShadow.set_attachedSprite(sprite);
-    sprite.animation.callback = function()
-    {
-        dropShadow.set_attachedSprite(sprite);
-    };
-
-    trace(Assets.getBitmapData(Paths.image(altMask)));
+    dropShadow.useAltMask = applyAltMask;
 }
 
-// USE THIS FUNCTION, DONT USE new DropShadowShader()!!!  - Nex
-public function getDropShadow():DropShadowShader {
+/**
+ * USE THIS FUNCTION, DONT USE `new DropShadowShader()`!!!  - Nex
+ */
+public function getDropShadow(?attachedSprite:FlxSprite):DropShadowShader {
     var fucker = new DropShadowShader();
 
     fucker.shader = new CustomShader("DropShadow");
@@ -135,14 +116,20 @@ public function getDropShadow():DropShadowShader {
     fucker.color = null;
     fucker.altMaskImage = null;
     fucker.maskThreshold = 0;
-    fucker.attachedSprite = null;
+
+    if ((fucker.attachedSprite = attachedSprite) != null) {
+        attachedSprite.shader = fucker.shader;
+        attachedSprite.animation.callback = fucker.onAttachedFrame;
+    }
 
     return fucker;
 }
 
-/*
-    TAKEN FROM VSLICE AND ADAPTED FOR CNE'S HSCRIPT!!!  - Nex
-*/
+/**
+ * Note from Nex:
+ * TAKEN FROM VSLICE AND ADAPTED FOR CNE'S HSCRIPT PUBLIC VERSION!!!
+ * You can use any variables and functions from this class BESIDES the ones that start with `set_` and `get_` (since these functions get called automatically when changing their linked variable)!!
+ */
 class DropShadowShader
 {
     /*
@@ -295,7 +282,7 @@ class DropShadowShader
 
     public function set_angle(val:Float):Float
     {
-        shader.ang = (angle = val) * FlxAngle.TO_RAD;
+        shader.ang = FlxAngle.asRadians(angle = val);
         return angle;
     }
 
@@ -320,17 +307,19 @@ class DropShadowShader
     /*
         Loads an image for the mask.
         While you *could* directly set the value of the mask, this function works for both HTML5 and desktop targets.
+        Nex's Edit: CNE auto handles this for every target so nah  - Nex
     */
     public function loadAltMask(path:String)
     {
-        #if html5
+        /*#if html5
         BitmapData.loadFromFile(path).onComplete(function(bmp:BitmapData) {
             altMaskImage = bmp;
         });
         #else
         altMaskImage = BitmapData.fromFile(path);
-        trace(altMaskImage);
-        #end
+        #end*/
+
+        altMaskImage = Assets.getBitmapData(path);
     }
 
     /*
