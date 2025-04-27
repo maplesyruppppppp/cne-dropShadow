@@ -25,7 +25,7 @@ To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dr
 
 Setting this to `true` will allow the sprite to have the shader. Default value is `false`/`null`.
 
-## <syntax lang="xml">ds_brightness</syntax>, <syntax lang="xml">ds_hue</syntax>, <syntax lang="xml">ds_saturation</syntax>, <syntax lang="xml">contrast</syntax>
+## <syntax lang="xml">ds_brightness</syntax>, <syntax lang="xml">ds_hue</syntax>, <syntax lang="xml">ds_saturation</syntax>, <syntax lang="xml">ds_contrast</syntax>
 
 Use these to change the colors that are not shaded. Default values are `0`.
 
