@@ -1,10 +1,29 @@
+# IMPORTING THE SCRIPT
+
+To import the script inside your stage xml file, put in `<use-extension script="dropshadow-effect"/>`.
+
+You can now assign variables to stage sprites (`sprite`, `boyfriend`, `dad`, `girlfriend` etc.).
+
+Your stage xml should look something like this:
+
+```xml
+<!DOCTYPE codename-engine-stage>
+<stage zoom="0.9">
+        <use-extension script="dropshadow-effect"/>
+
+        <girlfriend ds_applyShader="true" ds_color="white" ds_antialiasAmt="2" ds_angle="90" />
+	<dad ds_applyShader="true" ds_color="white" ds_antialiasAmt="2" ds_angle="90" />
+	<boyfriend ds_applyShader="true" ds_color="white" ds_antialiasAmt="2" ds_angle="90" />
+</stage>
+```
+
 # LIST OF VARIABLES
 
 ## <syntax lang="xml">ds_applyShader</syntax>
 
 Setting this to `true` will allow the sprite to have the shader. Default value is `false`/`null`.
 
-## <syntax lang="xml">brightness</syntax>, <syntax lang="xml">hue</syntax>, <syntax lang="xml">saturation</syntax>, <syntax lang="xml">contrast</syntax>
+## <syntax lang="xml">ds_brightness</syntax>, <syntax lang="xml">ds_hue</syntax>, <syntax lang="xml">ds_saturation</syntax>, <syntax lang="xml">contrast</syntax>
 
 Use these to change the colors that are not shaded. Default values are `0`.
 
