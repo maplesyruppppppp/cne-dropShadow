@@ -4,6 +4,6 @@ This is a stage extension that adds the drop shadow shader used in V-Slice to Co
 
 In your stage xml file, put in `<use-extension script="dropshadow-effect"/>` to import the script.
 
-(EXAMPLES COMING SOON)
+To understand how to use the stage extension, read [this tutorial](TUTORIAL.md).
 
-To understand how the values work, read [here](TUTORIAL.md)
+**MAKE SURE YOUR ENGINE IS UP TO DATE, PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
