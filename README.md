@@ -6,4 +6,6 @@ In your stage xml file, put in `<use-extension script="dropshadow-effect"/>` to 
 
 To understand how to use the stage extension, read [this tutorial](TUTORIAL.md).
 
+To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dropShadow/tree/examples).
+
 **MAKE SURE YOUR ENGINE IS UP TO DATE, PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
