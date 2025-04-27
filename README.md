@@ -6,4 +6,4 @@ In your stage xml file, put in `<use-extension script="dropshadow-effect"/>` to 
 
 (EXAMPLES COMING SOON)
 
-To understand how the values work, read [here](WIKI.md)
+To understand how the values work, read [here](TUTORIAL.md)
