@@ -52,6 +52,12 @@ The distance or size of the drop shadow, in pixels. Relative to the texture itse
 
 Default value is `15`.
 
+## <syntax lang="xml">ds_curZoom</syntax>
+
+The current zoom of the drop shadow. It's basically a distance multiplier.
+
+Default value is `1`.
+
 ## <syntax lang="xml">ds_strength</syntax>
 
 The strength of the drop shadow. Effectively just an alpha multiplier.
@@ -110,6 +116,7 @@ function postCreate()
 	dropShadow.color = FlxColor.WHITE; // the color for your drop shadow
 	dropShadow.angle = 0; // the angle for your drop shadow
 	dropShadow.distance = 15; // the distance for your drop shadow
+	dropShadow.curZoom = 1; // the current zoom for your drop shadow
 	dropShadow.threshold = 0.1; // the brightness for your drop shadow
 	dropShadow.antialiasAmt = 2; // the amount of antialias for your drop shadow
 
