@@ -165,7 +165,7 @@ class DropShadowShader
     /*
         The current zoom of the camera. Needed to figure out how much to multiply the drop shadow size.
     */
-    public var zoom:Float;
+    public var curZoom:Float;
 
     /*
         The strength of the drop shadow.
