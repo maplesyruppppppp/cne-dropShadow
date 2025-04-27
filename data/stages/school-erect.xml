@@ -24,7 +24,7 @@
 			antialiasing="false" scale="6" scroll="0.85" updateHitbox="true" type="loop"/>
 	</high-memory>
 
-    <girlfriend ds_applyShader="true" brightness="-42" hue="-10" contrast="5" saturation="-25" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/gfPixel_mask" ds_maskThreshold="1" />
-	<dad ds_applyShader="true" brightness="-66" hue="-10" contrast="24" saturation="-23" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/senpai_mask" ds_maskThreshold="1" />
-	<boyfriend ds_applyShader="true" brightness="-66" hue="-10" contrast="24" saturation="-23" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/bfPixel_mask" ds_maskThreshold="1"/>
+    <girlfriend ds_applyShader="true" ds_brightness="-42" ds_hue="-10" ds_contrast="5" ds_saturation="-25" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/gfPixel_mask" ds_maskThreshold="1" />
+	<dad ds_applyShader="true" ds_brightness="-66" ds_hue="-10" ds_contrast="24" ds_saturation="-23" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/senpai_mask" ds_maskThreshold="1" />
+	<boyfriend ds_applyShader="true" ds_brightness="-66" ds_hue="-10" ds_contrast="24" ds_saturation="-23" ds_color="#52351D" ds_antialiasAmt="0" ds_distance="5" ds_angle="90" ds_applyAltMask="true" ds_altMask="stages/school/erect/masks/bfPixel_mask" ds_maskThreshold="1"/>
 </stage>

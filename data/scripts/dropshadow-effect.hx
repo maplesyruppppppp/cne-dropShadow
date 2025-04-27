@@ -5,10 +5,10 @@
  */
 import flixel.graphics.frames.FlxFrame;
 import flixel.math.FlxAngle;
-import funkin.game.Stage.StageCharPos;
 import funkin.backend.utils.FlxInterpolateColor;
-import openfl.display.BitmapData;
+import funkin.game.Stage.StageCharPos;
 import haxe.xml.Access;
+import openfl.display.BitmapData;
 
 if (!Options.gameplayShaders)
 {
@@ -16,12 +16,6 @@ if (!Options.gameplayShaders)
     return;
 }
 
-var __dsShaderAttNames:Array<String> = [
-    "ds_applyShader",
-    "brightness", "hue", "contrast", "saturation", "ds_color",
-    "ds_angle", "ds_antialiasAmt", "ds_strength", "ds_distance", "ds_threshold",
-    "ds_altMask", "ds_maskThreshold", "ds_applyAltmask"
-];
 public var dsShaderCharsAtts:Array<Array<Dynamic>> = [];
 
 function onStageNodeParsed(event)
@@ -33,24 +27,19 @@ function onStageNodeParsed(event)
     {
         var atts = getDSShaderAttFromNode(node);
 
-        if (!atts[0]) return;
+        if (atts[0] == false) return;  // not using !atts[0] since the game would have convert a dynamic into a null which is slower; i wonder if its the same in hscript..?  - Nex
         initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], sprite);
     }
-    else
+    else if (sprite is StageCharPos)
     {
-        var map = event.stage.characterPoses;
-
-        for (char in map.keys()) if (map[char] == event.sprite)
-        {
-            dsShaderCharsAtts[getCharPosIndex(char)] = getDSShaderAttFromNode(node);
-            break;
-        }
+        var name = event.name;
+        if (event.stage.characterPoses.exists(name)) dsShaderCharsAtts[getCharPosIndex(name)] = getDSShaderAttFromNode(node);
     }
 }
 
 function create() if (strumLines != null) for (i => atts in dsShaderCharsAtts) if(atts != null) for (char in strumLines.members[i]?.characters)
 {
-    if (!atts[0]) return;
+    if (atts[0] == false) continue;
     initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], char);
 }
 
@@ -61,10 +50,10 @@ public function getDSShaderAttFromNode(node:Access):Array<Dynamic>
     return
     [
         CoolUtil.getAtt(node, "ds_applyShader") == "true",
-        getDSShaderAtt(CoolUtil.getAtt(node, "brightness")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "hue")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "contrast")),
-        getDSShaderAtt(CoolUtil.getAtt(node, "saturation")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_brightness")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_hue")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_contrast")),
+        getDSShaderAtt(CoolUtil.getAtt(node, "ds_saturation")),
         CoolUtil.getAtt(node, "ds_color"),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_angle")),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_antialiasAmt"), 2),
@@ -100,7 +89,9 @@ public function initDSShader(
     dropShadow.useAltMask = applyAltMask;
 }
 
-// USE THIS FUNCTION, DONT USE new DropShadowShader()!!!  - Nex
+/**
+ * USE THIS FUNCTION, DONT USE `new DropShadowShader()`!!!  - Nex
+ */
 public function getDropShadow(?attachedSprite:FlxSprite):DropShadowShader {
     var fucker = new DropShadowShader();
 
