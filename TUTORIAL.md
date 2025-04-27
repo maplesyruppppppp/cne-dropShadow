@@ -92,3 +92,29 @@ Anything below this number will NOT be affected by the drop shadow shader, but O
 
 Default value is `0`
 
+# USING THE SHADER IN HSCRIPT
+
+Using the stage extension in a `.hx` script is quite easy, as it's just literally this:
+
+```hx
+importScript('data/scripts/dropshadow-effect');
+
+function postCreate()
+{
+	// put the sprite you want to assign the shader to in this param
+	// it will automatically handle the shader assigning.
+	// also, by calling `getDropShadow`, it will already assign the variables to its default values.
+	var dropShadow = getDropShadow(boyfriend);
+
+	dropShadow.setAdjustColor(0, 0, 0, 0); // brightness, hue, contrast, saturation
+	dropShadow.color = FlxColor.WHITE; // the color for your drop shadow
+	dropShadow.angle = 0; // the angle for your drop shadow
+	dropShadow.distance = 15; // the distance for your drop shadow
+	dropShadow.threshold = 0.1; // the brightness for your drop shadow
+	dropShadow.antialiasAmt = 2; // the amount of antialias for your drop shadow
+
+	dropShadow.loadAltMask(Paths.image('my_mask')); // loads an alternate mask
+	dropShadow.maskThreshold = 0; // an alternate brightness threshold for your drop shadow
+	dropShadow.useAltMask = true; // whether the alternate mask is being used or not
+}
+```
