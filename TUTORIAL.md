@@ -17,6 +17,8 @@ Your stage xml should look something like this:
 </stage>
 ```
 
+To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dropShadow/tree/examples).
+
 # LIST OF VARIABLES
 
 ## <syntax lang="xml">ds_applyShader</syntax>
