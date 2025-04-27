@@ -8,6 +8,14 @@ To understand how to use the stage extension, read [this tutorial](TUTORIAL.md).
 
 To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dropShadow/tree/examples).
 
+## Credits
+
+- Syrup: Made the stage extension, added some new variables
+- Moro-Maniac: Ported the shader frag file
+- Nex_isDumb: Made the DropShadowShader class, made fixes and optimizations
+
+## Extra Information
+
 **MAKE SURE YOUR ENGINE IS UP TO DATE, PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
 
 **TEXTURE ATLASES ARE ALSO CURRENTLY NOT SUPPORTED, WAIT FOR A FUTURE UPDATE**

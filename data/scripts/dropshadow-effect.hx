@@ -1,5 +1,5 @@
 /** le credits
- * Syrup: made the stage extension
+ * Syrup: made the stage extension, added some new variables
  * Moro-Maniac: grabbed the shader frag file
  * Nex_isDumb: made the DropShadowShader class, made fixes and optimizations
  */
@@ -28,7 +28,8 @@ function onStageNodeParsed(event)
         var atts = getDSShaderAttFromNode(node);
 
         if (atts[0] == false) return;  // not using !atts[0] since the game would have convert a dynamic into a null which is slower; i wonder if its the same in hscript..?  - Nex
-        initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], atts[14], sprite);
+        initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
+            atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], sprite);
     }
     else if (sprite is StageCharPos)
     {
@@ -40,7 +41,8 @@ function onStageNodeParsed(event)
 function create() if (strumLines != null) for (i => atts in dsShaderCharsAtts) if(atts != null) for (char in strumLines.members[i]?.characters)
 {
     if (atts[0] == false) continue;
-    initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10], atts[11], atts[12], atts[13], atts[14], char);
+    initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
+        atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], char);
 }
 
 public function getCharPosIndex(charPos:String):Int
@@ -61,6 +63,9 @@ public function getDSShaderAttFromNode(node:Access):Array<Dynamic>
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_distance"), 15),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_curZoom"), 1),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_threshold"), 0.1),
+        CoolUtil.getAtt(node, 'ds_pixelPerfect') == "true",
+        CoolUtil.getAtt(node, 'ds_flipX') == "true",
+        CoolUtil.getAtt(node, 'ds_flipY') == "true",
         CoolUtil.getAtt(node, "ds_altMask"),
         getDSShaderAtt(CoolUtil.getAtt(node, "ds_maskThreshold")),
         CoolUtil.getAtt(node, "ds_applyAltMask") == "true"
@@ -71,7 +76,8 @@ public function getDSShaderAtt(att:String, ?def:Float):Float
 
 public function initDSShader(
     brightness:Float, hue:Float, contrast:Float, saturation:Float, color:String, angle:Float, antialiasAmt:Float, strength:Float,
-    distance:Float, curZoom:Float, threshold:Float, altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
+    distance:Float, curZoom:Float, threshold:Float, pixelPerfect:Bool, flipX:Bool, flipY:Bool,
+    altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
     ):CustomShader
 {
     var dropShadow = getDropShadow(sprite);
@@ -84,7 +90,10 @@ public function initDSShader(
     dropShadow.distance = distance;
     dropShadow.curZoom = curZoom;
     dropShadow.threshold = threshold;
+    dropShadow.pixelPerfect = pixelPerfect;
     dropShadow.antialiasAmt = antialiasAmt;
+    dropShadow.flipX = flipX;
+    dropShadow.flipY = flipY;
 
     if (altMask != null) dropShadow.loadAltMask(Paths.image(altMask));
     dropShadow.maskThreshold = maskThreshold;
@@ -110,6 +119,10 @@ public function getDropShadow(?attachedSprite:FlxSprite):DropShadowShader {
     fucker.baseContrast = 0;
     fucker.curZoom = 1;
 
+    fucker.flipX = false;
+    fucker.flipY = false;
+
+    fucker.pixelPerfect = false;
     fucker.antialiasAmt = 2;
 
     fucker.useAltMask = false;
@@ -181,11 +194,27 @@ class DropShadowShader
     public var threshold:Float;
 
     /*
+        Whether the shader aligns the drop shadow pixels perfectly.
+        False by default.
+    */
+    public var pixelPerfect:Bool;
+
+    /*
         The amount of antialias samples per-pixel,
         used to smooth out any hard edges the brightness thresholding creates.
         Defaults to 2, and 0 will remove any smoothing.
     */
     public var antialiasAmt:Float;
+
+    /*
+        Whether the drop shadow is flipped horizontally.
+    */
+    public var flipX:Bool;
+
+    /*
+        Whether the drop shadow is flipped vertically.
+    */
+    public var flipY:Bool;
 
     /*
         Whether the shader should try and use the alternate mask.
@@ -275,6 +304,12 @@ class DropShadowShader
         return val;
     }
 
+    public function set_pixelPerfect(val:Bool):Bool
+    {
+        shader.pixelPerfect = pixelPerfect = val;
+        return val;
+    }
+
     public function set_antialiasAmt(val:Float):Float
     {
         shader.AA_STAGES = antialiasAmt = val;
@@ -309,6 +344,18 @@ class DropShadowShader
     public function set_strength(val:Float):Float
     {
         shader.str = strength = val;
+        return val;
+    }
+
+    public function set_flipX(val:Bool):Bool
+    {
+        shader.flipX = flipX = val;
+        return val;
+    }
+
+    public function set_flipY(val:Bool):Bool
+    {
+        shader.flipY = flipY = val;
         return val;
     }
 

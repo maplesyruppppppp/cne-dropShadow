@@ -31,9 +31,13 @@ uniform float saturation;
 uniform float brightness;
 uniform float contrast;
 
-uniform float zoom;
-
 uniform float AA_STAGES;
+
+// new variables added by me!
+uniform float zoom;
+uniform bool pixelPerfect;
+uniform bool flipX;
+uniform bool flipY;
 
 const vec3 grayscaleValues = vec3(0.3098039215686275, 0.607843137254902, 0.0823529411764706);
 const float e = 2.718281828459045;
@@ -147,7 +151,20 @@ vec3 createDropShadow(vec3 col, float curThreshold, bool useMask) {
   vec2 imageRatio = vec2(1.0/openfl_TextureSize.x, 1.0/openfl_TextureSize.y);
 
   // check the pixel in the direction and distance specified
-  vec2 checkedPixel = vec2(openfl_TextureCoordv.x + ((dist * zoom) * cos(ang + angOffset) * imageRatio.x), openfl_TextureCoordv.y - ((dist * zoom) * sin(ang + angOffset) * imageRatio.y));
+  vec2 offset = vec2(
+    (dist * zoom) * cos(ang + angOffset),
+    -(dist * zoom) * sin(ang + angOffset)
+  );
+
+  // Flip directions if needed
+  if(flipX) offset.x = -offset.x;
+  if(flipY) offset.y = -offset.y;
+
+  if(pixelPerfect) {
+    offset = floor(offset + 0.5);
+  }
+
+  vec2 checkedPixel = openfl_TextureCoordv + (offset * imageRatio);
 
   // multiplier for the intensity of the drop shadow
   float dropShadowAmount = 0.0;

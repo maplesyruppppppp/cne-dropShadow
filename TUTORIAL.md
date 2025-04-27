@@ -78,6 +78,20 @@ The amount of antialias samples per-pixel, used to smooth out any hard edges the
         
 Default value is 2, and 0 will remove any smoothing (perfect for pixel art sprites).
 
+## <syntax lang="xml">ds_pixelPerfect</syntax>
+
+Whether the shader aligns the drop shadow pixels perfectly.
+
+Default value is `false`.
+
+## <syntax lang="xml">ds_flipX</syntax>
+
+Whether the drop shadow is flipped horizontally.
+
+## <syntax lang="xml">ds_flipY</syntax>
+
+Whether the drop shadow is flipped horizontally.
+
 ## <syntax lang="xml">ds_applyAltMask</syntax>
 
 If `true`, the shader will try and use an alternate mask.
@@ -119,6 +133,9 @@ function postCreate()
 	dropShadow.curZoom = 1; // the current zoom for your drop shadow
 	dropShadow.threshold = 0.1; // the brightness for your drop shadow
 	dropShadow.antialiasAmt = 2; // the amount of antialias for your drop shadow
+	dropShadow.pixelPerfect = false; // whether the pixels are aligned perfectly
+	dropShadow.flipX = false; // whether your drop shadow is flipped horizontally
+	dropShadow.flipY = false; // whether your drop shadow is flipped vertically
 
 	dropShadow.loadAltMask(Paths.image('my_mask')); // loads an alternate mask
 	dropShadow.maskThreshold = 0; // an alternate brightness threshold for your drop shadow
