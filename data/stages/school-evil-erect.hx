@@ -11,4 +11,23 @@ function postCreate()
     wiggle.effectType = WiggleEffectType.DREAMY;
 
     bg.shader = wiggle.shader;
+
+    if (Options.gameplayShaders)
+    {
+        dad.animation.onFrameChange.add((anim, frame, idx) ->
+        {
+            switch (anim)
+            {
+                default:
+                    boyfriend.shader.dist = 3;
+                    gf.shader.dist = 5;
+                case 'singLEFT':
+                    boyfriend.shader.dist = 2;
+                    gf.shader.dist = 4;
+                case 'singRIGHT':
+                    boyfriend.shader.dist = 4;
+                    gf.shader.dist = 6;
+            }
+        });
+    }
 }
