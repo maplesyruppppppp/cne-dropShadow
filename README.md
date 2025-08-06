@@ -2,8 +2,6 @@
 
 This is a stage extension that adds the drop shadow shader used in V-Slice to Codename Engine. (The shader you see in the senpai and tankmen erect stages)
 
-Codename V1 or higher IS required. Previous versions (v0.1) will not work properly.
-
 In your stage xml file, put in `<use-extension script="dropshadow-effect"/>` to import the script.
 
 To understand how to use the stage extension, read [this tutorial](TUTORIAL.md).
@@ -18,6 +16,6 @@ To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dr
 
 ## Extra Information
 
-**MAKE SURE YOUR ENGINE IS UP TO DATE, PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
+**MAKE SURE YOUR ENGINE IS UP TO DATE (V1 or higher), PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
 
 **TEXTURE ATLASES ARE ALSO CURRENTLY NOT SUPPORTED, WAIT FOR A FUTURE UPDATE**
