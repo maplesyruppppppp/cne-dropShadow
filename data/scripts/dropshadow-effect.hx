@@ -23,7 +23,7 @@ function onStageNodeParsed(event)
     var sprite = event.sprite;
     var node = event.node;
 
-    if (sprite is FlxSprite)
+    if (sprite is FunkinSprite)
     {
         var atts = getDSShaderAttFromNode(node);
 
