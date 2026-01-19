@@ -18,4 +18,4 @@ To view examples, visit [this branch](https://github.com/maplesyruppppppp/cne-dr
 
 **MAKE SURE YOUR ENGINE IS UP TO DATE (V1 or higher), PREVIOUS VERSIONS OF THE ENGINE DOES *NOT* SUPPORT THIS SCRIPT**
 
-**TEXTURE ATLASES ARE ALSO CURRENTLY NOT SUPPORTED, WAIT FOR A FUTURE UPDATE**
+**For Texture Atlas support, visit [this branch](https://github.com/maplesyruppppppp/cne-dropShadow/tree/main)**
