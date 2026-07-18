@@ -38,12 +38,20 @@ function onStageNodeParsed(event)
     }
 }
 
-function create() if (strumLines != null) for (i => atts in dsShaderCharsAtts) if(atts != null) for (char in strumLines.members[i]?.characters)
-{
-    if (atts[0] == false) continue;
-    initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
-        atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], char);
-}
+function create()
+	try {
+		if (strumLines != null)
+			for (i => atts in dsShaderCharsAtts)
+				if(atts != null)
+					for (char in strumLines.members[i]?.characters)
+                    {
+                        if (atts[0] == false) continue;
+                        initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
+                            atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], char);
+                    }
+	} catch (e:Dynamic){
+		trace(e);
+	}
 
 public function getCharPosIndex(charPos:String):Int
     return switch(charPos) { case "dad": 0; case "boyfriend": 1; default: 2; };
@@ -328,8 +336,10 @@ class DropShadowShader
         return val;
     }
 
-    public function set_color(col:FlxColor):FlxColor
+    public function set_color(?col:FlxColor):FlxColor
     {
+        if (col == null) return FlxColor.TRANSPARENT; //wow instant cne crash
+
         var lerpColor = new FlxInterpolateColor(color = col);  // some FlxColor stuff are abstracts, so lets use cne's FlxInterpolateColor  - Nex
         shader.dropColor = [lerpColor.red, lerpColor.green, lerpColor.blue];
         return color;
@@ -434,7 +444,7 @@ class DropShadowShader
         shader.angOffset = isNull ? 0 : frame.angle * FlxAngle.TO_RAD;
     }
 
-    public function set_altMaskImage(_bitmapData:BitmapData):BitmapData
+    public function set_altMaskImage(?_bitmapData:BitmapData):BitmapData
     {
         shader.altMask = _bitmapData;
         return _bitmapData;
