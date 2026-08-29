@@ -90,7 +90,7 @@ Whether the drop shadow is flipped horizontally.
 
 ## <syntax lang="xml">ds_flipY</syntax>
 
-Whether the drop shadow is flipped horizontally.
+Whether the drop shadow is flipped vertically.
 
 ## <syntax lang="xml">ds_applyAltMask</syntax>
 
