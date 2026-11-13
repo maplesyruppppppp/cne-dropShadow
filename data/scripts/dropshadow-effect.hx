@@ -108,44 +108,8 @@ public function initDSShader(
     dropShadow.useAltMask = applyAltMask;
 }
 
-/**
- * USE THIS FUNCTION, DONT USE `new DropShadowShader()`!!!  - Nex
- */
 public function getDropShadow(?attachedSprite:FunkinSprite):DropShadowShader {
-    var fucker = new DropShadowShader();
-
-    fucker.shader = new CustomShader("DropShadow");
-
-    fucker.angle = 0;
-    fucker.strength = 1;
-    fucker.distance = 15;
-    fucker.threshold = 0.1;
-
-    fucker.baseHue = 0;
-    fucker.baseSaturation = 0;
-    fucker.baseBrightness = 0;
-    fucker.baseContrast = 0;
-    fucker.curZoom = 1;
-
-    fucker.flipX = false;
-    fucker.flipY = false;
-
-    fucker.pixelPerfect = false;
-    fucker.antialiasAmt = 2;
-
-    fucker.useAltMask = false;
-
-    fucker.shader.angOffset = 0;
-
-    fucker.color = null;
-    fucker.altMaskImage = null;
-    fucker.maskThreshold = 0;
-
-    if ((fucker.attachedSprite = attachedSprite) != null) {
-        attachedSprite.shader = fucker.shader;
-        attachedSprite.animation.callback = fucker.onAttachedFrame;
-    }
-
+    var fucker = new DropShadowShader(attachedSprite);
     return fucker;
 }
 
@@ -167,12 +131,12 @@ class DropShadowShader
     /**
      * The DropShadow shader.
      */
-    public var shader:CustomShader;
+    public var shader(default, null):CustomShader;
 
     /**
      * The color of the drop shadow.
      */
-    public var color(default, set):FlxColor;
+    public var color(default, set):Null<FlxColor>;
 
     /**
      * The angle of the drop shadow.
@@ -244,7 +208,7 @@ class DropShadowShader
      * (its kinda sloppy rn i need to make it work a little nicer)
      * TODO: maybe have a sort of "threshold intensity texture" as well? where higher/lower values indicate threshold strength..
      */
-    public var altMaskImage(default, set):BitmapData;
+    public var altMaskImage(default, set):Null<BitmapData>;
 
     /**
      * An alternate brightness threshold for the drop shadow.
@@ -279,6 +243,40 @@ class DropShadowShader
      */
     public var baseContrast(default, set):Float;
 
+	public function new(?attachedSprite:FlxSprite) {
+		shader = FunkinShader.fromFile("DropShadow");
+
+		angle = 0;
+		strength = 1;
+    	distance = 15;
+    	threshold = 0.1;
+
+		baseHue = 0;
+		baseSaturation = 0;
+		baseBrightness = 0;
+		baseContrast = 0;
+		curZoom = 1;
+
+		flipX = false;
+		flipY = false;
+
+		pixelPerfect = false;
+		antialiasAmt = 2;
+
+		useAltMask = false;
+
+		shader.angOffset = 0;
+
+		color = null;
+		altMaskImage = null;
+		maskThreshold = 0;
+
+		if ((this.attachedSprite = attachedSprite) != null) {
+			attachedSprite.shader = this.shader;
+			attachedSprite.animation.callback = onAttachedFrame;
+		}
+	}
+
     /**
      * Sets all 4 adjust color values.
      * @param b The brightness value
@@ -288,10 +286,11 @@ class DropShadowShader
      */
     public function setAdjustColor(b:Float, h:Float, c:Float, s:Float):Void
     {
-        set_baseBrightness(b);
-        set_baseHue(h);
-        set_baseContrast(c);
-        set_baseSaturation(s);
+		// calling directly the "set_" function will retrigger them again when accessing to their variables - Jamextreme140
+        baseBrightness = b;
+		baseHue = h;
+		baseContrast = c;
+		baseSaturation = s;
     }
 
     public function set_baseHue(val:Float):Float
@@ -466,6 +465,4 @@ class DropShadowShader
             return val;
         }
     }
-
-    public function new(){}
 }
