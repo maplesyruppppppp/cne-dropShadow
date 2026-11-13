@@ -25,9 +25,9 @@ function onStageNodeParsed(event)
 
     if (sprite is FunkinSprite)
     {
-        var atts = getDSShaderAttFromNode(node);
+        var atts:Array<Dynamic> = getDSShaderAttFromNode(node);
 
-        if (atts[0] == false) return;  // not using !atts[0] since the game would have convert a dynamic into a null which is slower; i wonder if its the same in hscript..?  - Nex
+        if (!atts[0]) return;
         initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
             atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], sprite);
     }
@@ -41,14 +41,17 @@ function onStageNodeParsed(event)
 function create()
 	try {
 		if (strumLines != null)
-			for (i => atts in dsShaderCharsAtts)
-				if(atts != null)
-					for (char in strumLines.members[i]?.characters)
+			for (i => atts in dsShaderCharsAtts) {
+				if(atts != null) {
+					if(strumLines.members[i] == null) continue;
+					for (char in strumLines.members[i].characters)
                     {
                         if (atts[0] == false) continue;
                         initDSShader(atts[1], atts[2], atts[3], atts[4], atts[5], atts[6], atts[7], atts[8], atts[9], atts[10],
                             atts[11], atts[12], atts[13], atts[14], atts[15], atts[16], atts[17], char);
                     }
+				}
+			}
 	} catch (e:Dynamic){
 		trace(e);
 	}
@@ -85,10 +88,10 @@ public function getDSShaderAtt(att:String, ?def:Float):Float
 public function initDSShader(
     brightness:Float, hue:Float, contrast:Float, saturation:Float, color:String, angle:Float, antialiasAmt:Float, strength:Float,
     distance:Float, curZoom:Float, threshold:Float, pixelPerfect:Bool, flipX:Bool, flipY:Bool,
-    altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FlxSprite
-    ):CustomShader
+    altMask:String, maskThreshold:Float, applyAltMask:Bool, sprite:FunkinSprite
+    ):Void
 {
-    var dropShadow = getDropShadow(sprite);
+    var dropShadow:DropShadowShader = getDropShadow(sprite);
 
     dropShadow.setAdjustColor(brightness, hue, contrast, saturation);
     dropShadow.color = FlxColor.fromString(color);
