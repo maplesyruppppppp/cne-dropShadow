@@ -243,7 +243,7 @@ class DropShadowShader
      */
     public var baseContrast(default, set):Float;
 
-	public function new(?attachedSprite:FlxSprite) {
+	public function new(?attachedSprite:FunkinSprite) {
 		shader = FunkinShader.fromFile("DropShadow");
 
 		angle = 0;
